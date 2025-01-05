@@ -1,0 +1,52 @@
+{
+    "name": "MouseInput",
+    "maps": [
+        {
+            "name": "PlayerControls",
+            "id": "076f7202-ce1b-45bb-9db1-b3ad979ce07d",
+            "actions": [
+                {
+                    "name": "MouseMove",
+                    "type": "Value",
+                    "id": "82e8dfa1-94a0-4267-9773-19fb340a89e8",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MouseClick",
+                    "type": "Button",
+                    "id": "a33acdad-267e-4a44-853d-02bffb3cdc91",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b5551578-d828-4d24-8710-20393c7e8cf0",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0926e4c2-7917-4d6f-b870-89d33bad8347",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
