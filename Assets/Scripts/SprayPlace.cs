@@ -13,6 +13,7 @@ public class SprayPlace : MonoBehaviour
     [SerializeField] private GameObject decalPrefab; // Prefab for the decal
     [SerializeField] private Vector3 decalSize = new Vector3(0.2f, 0.2f, 0.1f); // Size of the decal
     [SerializeField] private float sprayDistance = 5f; // Maximum distance for spraying
+    
 
     private InputAction sprayAction; // InputAction for spraying
     private Ray ray;
@@ -33,11 +34,13 @@ public class SprayPlace : MonoBehaviour
 
     private void Update()
     {
+
+         
         // Perform the raycast from the spray nozzle
     ray = new Ray(sprayNozzle.position, -sprayNozzle.up);
-    Debug.DrawRay(ray.origin, ray.direction * sprayDistance, Color.red);
+   Debug.DrawRay(ray.origin, ray.direction * sprayDistance, Color.red);
 
-  //  Debug.Log($"SprayPlace: Ray created from {ray.origin} in direction {ray.direction}");
+    Debug.Log($"SprayPlace: Ray created from {ray.origin} in direction {ray.direction}");
 
     // Check if the spray button is pressed and the raycast hits a target
     if (sprayAction.ReadValue<float>() > 0)
