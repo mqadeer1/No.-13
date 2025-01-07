@@ -8,75 +8,113 @@ using UnityEngine.InputSystem; // Add this for the new Input System
 
 public class SprayPlace : MonoBehaviour
 {
-   [SerializeField] private Transform sprayNozzle; // The tip of the robotic arm (source of the ray)
-    [SerializeField] private LayerMask layerMask; // Layer mask for paintable surfaces
-    [SerializeField] private GameObject decalPrefab; // Prefab for the decal
-    [SerializeField] private Vector3 decalSize = new Vector3(0.2f, 0.2f, 0.1f); // Size of the decal
-    [SerializeField] private float sprayDistance = 5f; // Maximum distance for spraying
-    
+    [Header("First Arm Settings")]
+    [SerializeField] private Transform sprayNozzle1;
+    [SerializeField] private LayerMask layerMask1;
+    [SerializeField] private GameObject decalPrefab1; // Decal prefab for Arm 1
 
-    private InputAction sprayAction; // InputAction for spraying
-    private Ray ray;
-    private RaycastHit hit;
+    [Header("Second Arm Settings")]
+    [SerializeField] private Transform sprayNozzle2;
+    [SerializeField] private LayerMask layerMask2;
+    [SerializeField] private GameObject decalPrefab2; // Decal prefab for Arm 2
 
-    private void Awake()
+    [Header("Shared Settings")]
+    [SerializeField] private Vector3 decalSize = new Vector3(0.2f, 0.2f, 0.1f);
+    [SerializeField] private float sprayDistance = 5f;
+
+    private InputAction sprayAction;
+
+    void Awake()
     {
-        // Set up the InputAction for spraying
+        // Set up the input action for spraying
+        Debug.Log("SprayPlace: Initializing spray action.");
         sprayAction = new InputAction("Spray", binding: "<Mouse>/leftButton");
         sprayAction.Enable();
+        Debug.Log("SprayPlace: Spray action enabled.");
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        // Cleanup the InputAction
+        // Disable the input action
+        Debug.Log("SprayPlace: Disabling spray action.");
         sprayAction.Disable();
     }
 
-    private void Update()
+    void Update()
     {
+        // Log that Update is running
+        Debug.Log("SprayPlace: Update running.");
 
-         
-        // Perform the raycast from the spray nozzle
-    ray = new Ray(sprayNozzle.position, -sprayNozzle.up);
-   Debug.DrawRay(ray.origin, ray.direction * sprayDistance, Color.red);
+        // Perform raycasting for Arm 1
+        Debug.Log("SprayPlace: Performing spray for Arm 1.");
+        PerformSpray(sprayNozzle1, layerMask1, decalPrefab1, "Arm 1");
 
-    Debug.Log($"SprayPlace: Ray created from {ray.origin} in direction {ray.direction}");
+        // Perform raycasting for Arm 2
+        Debug.Log("SprayPlace: Performing spray for Arm 2.");
+        PerformSpray(sprayNozzle2, layerMask2, decalPrefab2, "Arm 2");
+    }
 
-    // Check if the spray button is pressed and the raycast hits a target
-    if (sprayAction.ReadValue<float>() > 0)
+    private void PerformSpray(Transform sprayNozzle, LayerMask layerMask, GameObject decalPrefab, string armName)
     {
-        Debug.Log("SprayPlace: Spray button pressed.");
-
-        if (Physics.Raycast(ray, out hit, sprayDistance, layerMask))
+        if (sprayNozzle == null)
         {
-            Debug.Log($"SprayPlace: Raycast hit {hit.collider.name} at {hit.point}");
-            PlaceDecal(hit.point, hit.normal);
+            Debug.LogError($"{armName}: Spray nozzle is not assigned.");
+            return;
+        }
+
+        Ray ray = new Ray(sprayNozzle.position, -sprayNozzle.up);
+        Debug.DrawRay(ray.origin, ray.direction * sprayDistance, Color.red);
+        Debug.Log($"{armName}: Raycast drawn from {ray.origin} in direction {ray.direction}.");
+
+        if (sprayAction.ReadValue<float>() > 0)
+        {
+            Debug.Log($"{armName}: Spray button pressed.");
+
+            if (Physics.Raycast(ray, out RaycastHit hit, sprayDistance, layerMask))
+            {
+                Debug.Log($"{armName}: Raycast hit {hit.collider.name} at {hit.point}.");
+                PlaceDecal(hit.point, hit.normal, hit.collider.transform, decalPrefab, armName);
+            }
+            else
+            {
+                Debug.Log($"{armName}: Raycast did not hit anything.");
+            }
         }
         else
         {
-            Debug.Log("SprayPlace: Raycast did not hit anything.");
+            Debug.Log($"{armName}: Spray button not pressed.");
         }
     }
-    }
 
-    private void PlaceDecal(Vector3 position, Vector3 normal)
+    private void PlaceDecal(Vector3 position, Vector3 normal, Transform parent, GameObject decalPrefab, string armName)
     {
-         // Instantiate the decal prefab
-    GameObject decalInstance = Instantiate(decalPrefab, position, Quaternion.LookRotation(normal));
+        Debug.Log($"{armName}: Placing decal at {position} with normal {normal}.");
 
-    // Configure the Decal Projector
-    DecalProjector decalProjector = decalInstance.GetComponent<DecalProjector>();
-    if (decalProjector != null)
-    {
-        decalProjector.size = decalSize;
-    }
+        // Slightly offset the decal from the surface to prevent z-fighting
+        position += normal * 0.01f;
 
-    // Make the decal a child of the hit object to follow its animation
-    decalInstance.transform.SetParent(hit.collider.transform, worldPositionStays: true);
+        GameObject decalInstance = Instantiate(decalPrefab, position, Quaternion.LookRotation(normal));
+        if (decalInstance != null)
+        {
+            Debug.Log($"{armName}: Decal instantiated at {position}.");
 
-    // Optional: Destroy the decal after some time to avoid clutter
-    //Destroy(decalInstance, 10f);
+            DecalProjector decalProjector = decalInstance.GetComponent<DecalProjector>();
+            if (decalProjector != null)
+            {
+                decalProjector.size = decalSize;
+                Debug.Log($"{armName}: Decal size set to {decalProjector.size}.");
+            }
+            else
+            {
+                Debug.LogError($"{armName}: No DecalProjector found on decal prefab.");
+            }
 
-    Debug.Log($"Decal placed at {position}, aligned with normal {normal}");
+            decalInstance.transform.SetParent(parent, worldPositionStays: true);
+            Debug.Log($"{armName}: Decal parent set to {parent.name}.");
+        }
+        else
+        {
+            Debug.LogError($"{armName}: Failed to instantiate decal prefab.");
+        }
     }
 }

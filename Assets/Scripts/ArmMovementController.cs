@@ -5,64 +5,60 @@ using UnityEngine.InputSystem;
 
 public class ArmMovementController : MonoBehaviour
 {
-    public Transform upperArm; // Transform reference for the upper arm
+   [Header("First Arm Settings")]
+    public Transform upperArm1; // First arm's upper arm Transform
+    public float upperArm1XTurnRate = 1.0f;
+    public float upperArm1YTurnRate = 1.0f;
 
-    // Rotation speeds for the upper arm's X and Y axes
-    public float upperArmXTurnRate = 1.0f;
-    public float upperArmYTurnRate = 1.0f;
+    [Header("Second Arm Settings")]
+    public Transform upperArm2; // Second arm's upper arm Transform
+    public float upperArm2XTurnRate = 1.0f;
+    public float upperArm2YTurnRate = 1.0f;
 
-    // Multiplier to amplify movement for fine-tuning
+    [Header("Shared Settings")]
     public float rotationMultiplier = 2.0f;
 
-    // Rotation limits for the upper arm
-    private float upperArmXRot = 0.0f;
-    private float upperArmYRot = 0.0f;
-    public float upperArmXRotMin = -45.0f;
-    public float upperArmXRotMax = 45.0f;
-    public float upperArmYRotMin = -30.0f;
-    public float upperArmYRotMax = 30.0f;
+    // Rotation limits for both arms
+    private float upperArm1XRot = 0.0f, upperArm2XRot = 0.0f;
+    private float upperArm1YRot = 0.0f, upperArm2YRot = 0.0f;
+    public float upperArmXRotMin = -45.0f, upperArmXRotMax = 45.0f;
+    public float upperArmYRotMin = -30.0f, upperArmYRotMax = 30.0f;
 
-    private MouseInput mouseInput; // Reference to the Input System class for mouse actions
+    private MouseInput mouseInput;
 
     void Awake()
     {
-        // Initialize the Input System
         mouseInput = new MouseInput();
     }
 
     void OnEnable()
     {
-        // Enable the Input Action Map
         mouseInput.PlayerControls.Enable();
     }
 
     void OnDisable()
     {
-        // Disable the Input Action Map
         mouseInput.PlayerControls.Disable();
     }
 
     void Update()
     {
-        // Get mouse delta input from the Input System
+        // Get mouse delta input
         Vector2 mouseDelta = mouseInput.PlayerControls.MouseMove.ReadValue<Vector2>();
 
-        // Update the upper arm rotation based on the mouse delta
-        upperArmXRot += mouseDelta.y * upperArmXTurnRate * rotationMultiplier * Time.deltaTime;
-        upperArmYRot += mouseDelta.x * upperArmYTurnRate * rotationMultiplier * Time.deltaTime;
+        // Update rotation for Arm 1
+        upperArm1XRot += mouseDelta.y * upperArm1XTurnRate * rotationMultiplier * Time.deltaTime;
+        upperArm1YRot += mouseDelta.x * upperArm1YTurnRate * rotationMultiplier * Time.deltaTime;
+        upperArm1XRot = Mathf.Clamp(upperArm1XRot, upperArmXRotMin, upperArmXRotMax);
+        upperArm1YRot = Mathf.Clamp(upperArm1YRot, upperArmYRotMin, upperArmYRotMax);
+        upperArm1.localEulerAngles = new Vector3(upperArm1XRot, upperArm1YRot, upperArm1.localEulerAngles.z);
 
-        // Clamp the rotations to their respective limits
-        upperArmXRot = Mathf.Clamp(upperArmXRot, upperArmXRotMin, upperArmXRotMax);
-        upperArmYRot = Mathf.Clamp(upperArmYRot, upperArmYRotMin, upperArmYRotMax);
-
-        // Apply the rotation to the upper arm
-        upperArm.localEulerAngles = new Vector3(
-            upperArmXRot,
-            upperArmYRot,
-            upperArm.localEulerAngles.z
-        );
-
-        //Debug.Log($"Mouse Delta: {mouseDelta}, Rotations - X: {upperArmXRot}, Y: {upperArmYRot}");
+        // Update rotation for Arm 2 (Invert mouse for demonstration purposes)
+        upperArm2XRot -= mouseDelta.y * upperArm2XTurnRate * rotationMultiplier * Time.deltaTime;
+        upperArm2YRot -= mouseDelta.x * upperArm2YTurnRate * rotationMultiplier * Time.deltaTime;
+        upperArm2XRot = Mathf.Clamp(upperArm2XRot, upperArmXRotMin, upperArmXRotMax);
+        upperArm2YRot = Mathf.Clamp(upperArm2YRot, upperArmYRotMin, upperArmYRotMax);
+        upperArm2.localEulerAngles = new Vector3(upperArm2XRot, upperArm2YRot, upperArm2.localEulerAngles.z);
     }
 }
 

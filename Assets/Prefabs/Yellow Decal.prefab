@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8358797168561835512}
   - component: {fileID: 8358797168561835515}
   m_Layer: 6
-  m_Name: Decal Projector
+  m_Name: Yellow Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
