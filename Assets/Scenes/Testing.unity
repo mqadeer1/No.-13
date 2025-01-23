@@ -427,7 +427,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 541b4b2cae8b02841a7a763299bad603, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 34513211230d8d6469cd6e6eb4d3c576, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -784,6 +784,7 @@ MonoBehaviour:
   m_Script: {fileID: 939282248}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &295277640
 Transform:
   m_ObjectHideFlags: 19
@@ -1720,6 +1721,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6dc1d5c14d7d0664da72cb38938902ca, type: 3}
   m_PrefabInstance: {fileID: 460418353}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &625819819 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 6dc1d5c14d7d0664da72cb38938902ca, type: 3}
+  m_PrefabInstance: {fileID: 460418353}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &625819821
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1748,6 +1754,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 50
   rotationAxis: {x: 0, y: 1, z: 0}
+--- !u!114 &625819823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625819818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d9f112b31b6cf42a3eaf65f4345b74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 625819819}
+  sprayPlaceScript: {fileID: 910107641}
+  firstAnimationName: New Animation
+  lastAnimationName: 4
 --- !u!1 &779342158
 GameObject:
   m_ObjectHideFlags: 0
