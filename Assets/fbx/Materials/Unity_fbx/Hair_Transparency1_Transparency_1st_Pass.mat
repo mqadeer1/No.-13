@@ -100,17 +100,21 @@ Material:
     - _BaseColorStrength: 1
     - _BlendMode: 0
     - _BlendStrength: 0
+    - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 0
     - _CullModeForward: 0
     - _DepthOffsetEnable: 0
     - _DiffuseStrength: 0.8
     - _DoubleSidedEnable: 1
+    - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
+    - _DstBlend2: 0
     - _ENUMCLIPQUALITY_ON: 0
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
     - _EndColorStrength: 1
+    - _ExcludeFromTUAndAA: 0
     - _FlowMapFlipGreen: 0
     - _GlobalStrength: 1
     - _HighlightAOverlapEnd: 0
@@ -123,6 +127,7 @@ Material:
     - _InvertRootMap: 0
     - _NormalStrength: 1
     - _OpaqueCullMode: 2
+    - _PerPixelSorting: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 4

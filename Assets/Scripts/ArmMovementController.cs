@@ -61,4 +61,3 @@ public class ArmMovementController : MonoBehaviour
         upperArm2.localEulerAngles = new Vector3(upperArm2XRot, upperArm2YRot, upperArm2.localEulerAngles.z);
     }
 }
-
